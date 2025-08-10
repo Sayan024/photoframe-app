@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Mx. Banerjee</title>
+    <!-- Google Fonts - Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #21130d;
+            --primary-color-hover: #e28743;
+            --text-color-dark: #21130d;
+            --bg-color-light: #eeeee4;
+            --bg-color-white: #ffffff;
+            --border-color: #d1d5db;
+            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --button-primary: #2563eb;
+            --button-danger: #ef4444;
+            --button-text-light: #fff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color-light);
+            color: var(--text-color-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background-color: var(--bg-color-white);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-card);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-container p {
+            color: var(--text-color-light);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background-color: var(--bg-color-light);
+        }
+
+        .login-btn {
+            background-color: var(--button-primary);
+            color: var(--button-text-light);
+            border: none;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .login-btn:hover {
+            background-color: #1a4fbc;
+        }
+
+        .register-link, .admin-login-link {
+            display: block;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-color-dark);
+            text-decoration: none;
+        }
+        .register-link:hover, .admin-login-link:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-color-dark);
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: var(--button-danger);
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Mx. Banerjee</h2>
+        <p>User Login</p>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+            <p id="errorMessage" class="error-message"></p>
+        </form>
+        <a href="register.html" class="register-link">Don't have an account? Register here.</a>
+        <a href="admin-login.html" class="admin-login-link">Admin Login</a>
+        <a href="index.html" class="back-link">Back to Home</a>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const errorMessage = document.getElementById('errorMessage');
+            
+            errorMessage.textContent = ''; // Clear any previous error messages
+
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                // Successful login
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userRole', user.role);
+                // Redirect based on role
+                if (user.role === 'admin') {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
+            } else {
+                // Failed login
+                errorMessage.textContent = 'Invalid email or password.';
+            }
+        });
+    </script>
+</body>
+</html>

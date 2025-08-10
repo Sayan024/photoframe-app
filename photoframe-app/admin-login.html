@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mx.banerjee | Admin Login</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #21130d; /* Eternity - dark black/brown */
+            --primary-color-hover: #e28743; /* Burnt Sienna */
+            --text-color-dark: #21130d;
+            --text-color-light: #6b7280;
+            --bg-color-light: #eeeee4; /* Green White */
+            --bg-color-white: #ffffff;
+            --border-color: #d1d5db;
+            --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --price-color: #5CB338;
+            --accent-color: #eab676; /* Tacao */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color-light);
+            color: var(--text-color-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Utility Classes --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .card {
+            background-color: var(--bg-color-white);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hidden {
+            display: none;
+        }
+
+        /* --- Header --- */
+        .header {
+            background-color: var(--bg-color-white);
+            box-shadow: var(--shadow-light);
+            padding: 1rem 0;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .logo:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- Main Content --- */
+        .main {
+            flex-grow: 1;
+            padding: 2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .admin-login-box {
+            padding: 2.5rem;
+            max-width: 400px;
+            width: 100%;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .admin-login-box h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .admin-login-box input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color-white);
+            color: var(--text-color-dark);
+            margin-bottom: 1rem;
+        }
+        .admin-login-box button {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .admin-login-box button:hover {
+            background-color: var(--primary-color-hover);
+            transform: translateY(-2px);
+        }
+        .admin-login-box .error-message {
+            color: #ef4444;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .back-link {
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            text-align: center;
+            color: var(--text-color-dark);
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--text-color-dark);
+            color: var(--bg-color-white);
+            padding: 2rem 0;
+            margin-top: auto;
+            text-align: center;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .footer-text {
+            font-size: 0.875rem;
+            color: var(--text-color-light);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">mx.banerjee</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main container">
+        <div class="admin-login-box card">
+            <h2 class="flex-center" style="gap: 1rem;"><i class="fas fa-lock"></i> Admin Login</h2>
+            <form id="admin-login-form">
+                <input type="password" id="admin-password" placeholder="Enter Admin Password">
+                <p id="login-error-message" class="error-message hidden">Incorrect password. Please try again.</p>
+                <button type="submit">Log In</button>
+            </form>
+            <a href="login.html" class="back-link">Return to User Login</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <a href="index.html" class="footer-logo">mx.banerjee</a>
+            <p class="footer-text">© 2023 mx.banerjee. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const ADMIN_PASSWORD = 'admin123';
+        const adminLoginForm = document.getElementById('admin-login-form');
+        const loginErrorMessage = document.getElementById('login-error-message');
+
+        adminLoginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const password = document.getElementById('admin-password').value;
+            if (password === ADMIN_PASSWORD) {
+                // Set a flag in localStorage to indicate a successful login
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userRole', 'admin');
+                window.location.href = 'dashboard.html';
+            } else {
+                loginErrorMessage.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

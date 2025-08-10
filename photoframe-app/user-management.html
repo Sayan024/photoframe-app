@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mx. Banerjee | User Management</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Your provided color palette */
+            --primary-color: #21130d;
+            --primary-color-hover: #e28743;
+            --text-color-dark: #21130d;
+            --text-color-light: #6b7280;
+            --bg-color-light: #eeeee4;
+            --bg-color-white: #ffffff;
+            --border-color: #d1d5db;
+            --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --sidebar-bg: #1e293b;
+            --sidebar-item-hover: #2d3846;
+            --sidebar-active-bg: #2563eb;
+            --sidebar-active-color: #fff;
+            --sidebar-link-color: #d1d5db;
+            --button-primary: #2563eb;
+            --button-success: #10b981;
+            --button-danger: #ef4444;
+            --button-warning: #fbbf24;
+            --button-text-light: #fff;
+            --button-text-dark: #21130d;
+            --status-active: #10b981;
+            --status-pending: #fbbf24;
+            --status-inactive: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color-light);
+            color: var(--text-color-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* --- Layout Structure --- */
+        .admin-layout {
+            display: flex;
+            width: 100%;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-link-color);
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        /* --- Sidebar Branding & Nav --- */
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding-left: 0.5rem;
+        }
+        .sidebar-brand .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--bg-color-white);
+        }
+
+        .sidebar-nav {
+            flex-grow: 1;
+        }
+        .sidebar-nav-item {
+            list-style: none;
+            margin-bottom: 0.5rem;
+        }
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            color: var(--sidebar-link-color);
+            transition: all 0.2s ease;
+        }
+        .sidebar-nav-link:hover,
+        .sidebar-nav-link.active {
+            background-color: var(--sidebar-active-bg);
+            color: var(--sidebar-active-color);
+        }
+        .sidebar-nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-logout {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .logout-btn {
+            background-color: var(--button-danger);
+            color: var(--button-text-light);
+            border: none;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .logout-btn:hover {
+            opacity: 0.9;
+        }
+        .logout-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* --- Main Content Header & Controls --- */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .main-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .main-header .controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .main-header .search-box {
+            position: relative;
+        }
+        .main-header .search-box input {
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color-white);
+        }
+        .main-header .search-box i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color-light);
+        }
+        .main-header .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            color: white;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .main-header .btn-success { background-color: var(--button-success); }
+        .main-header .btn-danger { background-color: var(--button-danger); }
+        .main-header .btn-action { background-color: var(--button-primary); }
+
+        /* --- General Table Styling --- */
+        .data-table-section {
+            background-color: var(--bg-color-white);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-card);
+            overflow-x: auto;
+        }
+        .data-table-section table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .data-table-section th,
+        .data-table-section td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .data-table-section thead {
+            background-color: var(--bg-color-light);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: var(--text-color-light);
+        }
+        .data-table-section tbody tr:nth-child(odd) {
+            background-color: var(--bg-color-white);
+        }
+        .data-table-section tbody tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+        .data-table-section tbody tr:hover {
+            background-color: #eef1f6;
+        }
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- Specific Styles for User Table --- */
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            color: white;
+        }
+        .status-badge.active { background-color: var(--button-success); }
+        .status-badge.pending { background-color: var(--button-warning); }
+        .status-badge.inactive { background-color: var(--button-danger); }
+        .role-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            color: white;
+        }
+        .role-badge.admin { background-color: var(--button-danger); }
+        .role-badge.user { background-color: var(--button-primary); }
+        .action-icons i {
+            cursor: pointer;
+            margin-right: 0.5rem;
+            color: var(--text-color-dark);
+            transition: color 0.2s ease;
+        }
+        .action-icons i:hover {
+            color: var(--primary-color-hover);
+        }
+
+        /* --- Modal Styling --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+        .modal-content {
+            background-color: var(--bg-color-white);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-card);
+            width: 100%;
+            max-width: 500px;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .close-modal {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color-light);
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background-color: var(--bg-color-light);
+        }
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .form-actions .btn {
+            min-width: 100px;
+        }
+
+        /* --- Responsive Styles for Mobile --- */
+        @media (max-width: 768px) {
+            .admin-layout { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: static; padding: 1rem; }
+            .main-content { padding: 1rem; }
+            .main-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .main-header .controls { flex-direction: column; align-items: flex-start; width: 100%; }
+            .main-header .search-box { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <span class="logo">Mx. Banerjee</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="sidebar-nav-item"><a href="dashboard.html" class="sidebar-nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li class="sidebar-nav-item"><a href="user-management.html" class="sidebar-nav-link active"><i class="fas fa-users"></i> User Management</a></li>
+                    <li class="sidebar-nav-item"><a href="product-management.html" class="sidebar-nav-link"><i class="fas fa-box-open"></i> Product Management</a></li>
+                    <li class="sidebar-nav-item"><a href="orders.html" class="sidebar-nav-link"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                    <li class="sidebar-nav-item"><a href="#" class="sidebar-nav-link"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-logout">
+                <button class="logout-btn" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <section id="admin-user-list" class="user-list-section">
+                <div class="main-header">
+                    <h2>User List – Mx. Banerjee</h2>
+                    <div class="controls">
+                        <div class="search-box">
+                            <input id="user-search" type="text" placeholder="Search...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <button class="btn btn-success" onclick="showAddUserForm()"><i class="fas fa-plus"></i> Add User</button>
+                    </div>
+                </div>
+
+                <div class="data-table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-table-body">
+                            <!-- Table rows will be populated here by JavaScript -->
+                        </tbody>
+                    </table>
+                    <div class="table-footer">
+                        <span id="entries-info">Showing 0 of 0 entries</span>
+                        <div class="pagination">
+                            <i class="fas fa-chevron-left"></i>
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New User</h3>
+                <span class="close-modal" onclick="closeModal('addUserModal')">&times;</span>
+            </div>
+            <form id="addUserForm">
+                <div class="form-group">
+                    <label for="userName">Name</label>
+                    <input type="text" id="userName" name="userName" required>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" name="userEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="userStatus">Status</label>
+                    <select id="userStatus" name="userStatus" required>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userRole">Role</label>
+                    <select id="userRole" name="userRole" required>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-danger" onclick="closeModal('addUserModal')">Cancel</button>
+                    <button type="submit" class="btn btn-success">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Check for existing users in local storage or create dummy data
+        const dummyUsers = [
+            { id: 1, name: 'John Doe', email: 'john@example.com', status: 'active', role: 'user' },
+            { id: 2, name: 'Jane Smith', email: 'jane@example.com', status: 'inactive', role: 'user' },
+            { id: 3, name: 'Admin User', email: 'admin@example.com', status: 'active', role: 'admin' }
+        ];
+
+        let users = JSON.parse(localStorage.getItem('users')) || dummyUsers;
+        localStorage.setItem('users', JSON.stringify(users));
+
+        function renderUserTable(filteredUsers = users) {
+            const tableBody = document.getElementById('user-table-body');
+            tableBody.innerHTML = '';
+            
+            filteredUsers.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="checkbox"></td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td><span class="status-badge ${user.status}">${user.status}</span></td>
+                    <td><span class="role-badge ${user.role}">${user.role}</span></td>
+                    <td class="action-icons">
+                        <i class="fas fa-edit"></i>
+                        <i class="fas fa-trash-alt"></i>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Search functionality
+        document.getElementById('user-search').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredUsers = users.filter(user => 
+                user.name.toLowerCase().includes(searchTerm) || 
+                user.email.toLowerCase().includes(searchTerm)
+            );
+            renderUserTable(filteredUsers);
+        });
+
+        // Modal functions
+        function showAddUserForm() {
+            document.getElementById('addUserModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Handle form submission
+        document.getElementById('addUserForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent page reload
+
+            const newUserId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
+            const newUser = {
+                id: newUserId,
+                name: document.getElementById('userName').value,
+                email: document.getElementById('userEmail').value,
+                status: document.getElementById('userStatus').value,
+                role: document.getElementById('userRole').value,
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            renderUserTable();
+            closeModal('addUserModal');
+            this.reset();
+        });
+
+        // Logout function
+        function logoutAdmin() {
+            localStorage.removeItem('isAdminLoggedIn');
+            window.location.href = 'index.html';
+        }
+
+        // Initial render
+        document.addEventListener('DOMContentLoaded', () => {
+            renderUserTable();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mx.banerjee | Shop</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #21130d; /* Eternity - dark black/brown */
+            --primary-color-hover: #e28743; /* Burnt Sienna */
+            --text-color-dark: #21130d;
+            --text-color-light: #6b7280;
+            --bg-color-light: #eeeee4; /* Green White */
+            --bg-color-white: #ffffff;
+            --border-color: #d1d5db;
+            --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --price-color: #5CB338;
+            --accent-color: #eab676; /* Tacao */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color-light);
+            color: var(--text-color-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Utility Classes --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .text-center { text-align: center; }
+        .card {
+            background-color: var(--bg-color-white);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+        }
+        .hidden { display: none; }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- Header & Navigation --- */
+        .header {
+            background-color: var(--bg-color-white);
+            box-shadow: var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .logo:hover { color: var(--accent-color); }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .nav-link {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color-light);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+        .nav-link.active,
+        .nav-link:hover { color: var(--primary-color); }
+        .nav-link.active::after {
+            width: 100%;
+            left: 0;
+        }
+        .cart-link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .cart-badge {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.15rem 0.4rem;
+            border-radius: 9999px;
+            border: 1px solid white;
+        }
+        .admin-link {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .admin-link:hover {
+            background-color: var(--primary-color-hover);
+        }
+
+        /* --- Main Content & Pages --- */
+        .main {
+            flex-grow: 1;
+            padding: 2rem 0;
+        }
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .page.active { display: block; }
+        .hero {
+            background-color: var(--bg-color-white);
+            color: var(--text-color-dark);
+            padding: 4rem 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 3rem;
+            text-align: center;
+            animation: slideInUp 0.7s ease-out;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: var(--text-color-light);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .hero-btn:hover {
+            background-color: var(--primary-color-hover);
+            transform: translateY(-2px);
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            display: flex;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 0.75rem 3rem 0.75rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color-white);
+            font-size: 1rem;
+            transition: box-shadow 0.3s ease;
+        }
+        .search-bar input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--accent-color);
+        }
+        .search-bar .fa-search {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color-light);
+        }
+
+        .category-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        .category-buttons button {
+            background-color: var(--bg-color-white);
+            color: var(--text-color-dark);
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            border: 1px solid var(--border-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .category-buttons button:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .category-buttons button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .product-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+        .product-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover img { transform: scale(1.05); }
+
+        .product-info {
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .product-info h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .product-info p {
+            font-size: 0.875rem;
+            color: var(--text-color-light);
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-actions .price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--price-color);
+        }
+        .add-to-cart-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1rem; /* Adjusted for smaller size */
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s ease;
+            font-size: 0.9rem; /* Smaller font for better fit */
+        }
+        .add-to-cart-btn:hover { background-color: var(--primary-color-hover); }
+
+        /* Cart page */
+        .cart-content { padding: 2rem; }
+        .cart-item {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        @media (min-width: 640px) {
+            .cart-item {
+                grid-template-columns: 1fr 1fr 1fr;
+                align-items: center;
+            }
+        }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item-details {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .cart-item-details img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+        .cart-item-info { flex-grow: 1; }
+        .cart-item-info h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        .cart-item-info p { color: var(--text-color-light); }
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        @media (max-width: 768px) {
+            .product-card {
+                margin: 0;
+                width: 100%;
+            }
+            .product-card img {
+                height: 200px;
+            }
+            .product-info h3 {
+                font-size: 1.1rem;
+            }
+            .add-to-cart-btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.9rem;
+            }
+            .add-to-cart-btn span {
+                display: none;
+            }
+        }
+        @media (min-width: 640px) { .cart-item-actions { margin-top: 0; } }
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .quantity-control button {
+            background-color: #e5e7eb;
+            border: none;
+            color: var(--text-color-dark);
+            padding: 0.5rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .quantity-control button:hover { background-color: #d1d5db; }
+        .remove-from-cart-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+        .remove-from-cart-btn:hover { color: #b91c1c; }
+        .cart-summary {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+        .cart-summary h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .checkout-btn {
+            background-color: #5CB338;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+        }
+        .checkout-btn:hover { background-color: #4a912c; }
+        .empty-cart {
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .empty-cart .fa-shopping-cart {
+            font-size: 3rem;
+            color: var(--border-color);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--text-color-dark);
+            color: var(--bg-color-white);
+            padding: 2rem 0;
+            margin-top: auto;
+            text-align: center;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .footer-text {
+            font-size: 0.875rem;
+            color: var(--text-color-light);
+        }
+        
+        /* --- Toast Notification (Centralized Modal) --- */
+        .toast-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default */
+            place-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .toast-overlay.active { display: grid; }
+        .toast {
+            background-color: var(--bg-color-white);
+            box-shadow: var(--shadow-card);
+            padding: 1.5rem 2rem;
+            border-radius: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 400px;
+            width: 90%;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .toast .icon { font-size: 1.5rem; }
+        .toast.success .icon { color: #5CB338; }
+        .toast.error .icon { color: #FB4141; }
+        .toast .message {
+            font-weight: 600;
+            font-size: 1rem;
+            flex-grow: 1;
+        }
+        .toast-close-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-color-light);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .toast-close-btn:hover { color: var(--text-color-dark); }
+        
+        /* --- Animations --- */
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 768px) {
+            .nav-links span { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1rem; }
+
+            .product-card {
+                margin: 0;
+                width: 100%;
+            }
+            .product-card img {
+                height: 200px;
+            }
+            .product-info h3 {
+                font-size: 1.1rem;
+            }
+            .add-to-cart-btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.9rem;
+            }
+            .add-to-cart-btn span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">mx.banerjee</a>
+                <div class="nav-links">
+                    <button id="nav-home" class="nav-link active" onclick="navigateTo('home')">
+                        <i class="fas fa-home"></i> <span>Home</span>
+                    </button>
+                    <button id="nav-products" class="nav-link" onclick="navigateTo('products')">
+                        <i class="fas fa-box"></i> <span>Products</span>
+                    </button>
+                    <button id="nav-cart" class="nav-link relative cart-link" onclick="navigateTo('cart')">
+                        <div class="cart-icon-text">
+                            <i class="fas fa-shopping-cart"></i> <span>Cart</span>
+                        </div>
+                        <span id="cart-badge" class="cart-badge hidden">0</span>
+                    </button>
+                    <a href="login.html" class="nav-link">
+                        <i class="fas fa-lock"></i> <span>Login</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main container">
+        <!-- Home Page -->
+        <section id="home-page" class="page active">
+            <div class="hero card">
+                <h1>Let's Frame Your Memories</h1>
+                <p>Our premium quality frames are designed to showcase your most cherished moments with style and elegance.</p>
+                <div class="search-bar">
+                    <input id="search-input" type="text" placeholder="Search for frame styles, materials, or sizes...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <section style="margin-bottom: 2rem;">
+                <h2 class="text-center" style="font-size: 2rem; font-weight: 700; margin-bottom: 1.5rem;">Browse by Category</h2>
+                <div id="category-buttons" class="category-buttons">
+                    <!-- Category buttons will be injected here by JS -->
+                </div>
+            </section>
+            <section>
+                <h2 class="text-center" style="font-size: 2.25rem; font-weight: 700; margin-bottom: 2rem;">Daily Deals</h2>
+                <div id="featured-products-grid" class="products-grid">
+                    <!-- Featured product cards will be injected here by JS -->
+                </div>
+            </section>
+        </section>
+
+        <!-- Products Page -->
+        <section id="products-page" class="page">
+            <h2 class="text-center" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem;">Our Collection</h2>
+            <div id="all-products-grid" class="products-grid">
+                <!-- All product cards will be injected here by JS -->
+            </div>
+        </section>
+
+        <!-- Cart Page -->
+        <section id="cart-page" class="page">
+            <h2 class="text-center" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem;">Your Shopping Cart</h2>
+            <div id="cart-content" class="card cart-content">
+                <!-- Cart items or empty cart message will be injected here -->
+            </div>
+        </section>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <a href="index.html" class="footer-logo">mx.banerjee</a>
+            <p class="footer-text">© 2023 mx.banerjee. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification Overlay -->
+    <div id="toast-overlay" class="toast-overlay">
+        <div id="toast" class="toast card">
+            <i id="toast-icon" class="fas icon"></i>
+            <span id="toast-message" class="message"></span>
+            <button id="toast-close-btn" class="toast-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <script>
+        // --- Data Persistence Functions using localStorage ---
+        function saveData() {
+            localStorage.setItem('products', JSON.stringify(products));
+            localStorage.setItem('cart', JSON.stringify(cart));
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+            localStorage.setItem('orders', JSON.stringify(orders));
+        }
+
+        function loadData() {
+            const storedProducts = localStorage.getItem('products');
+            const storedCart = localStorage.getItem('cart');
+            const storedProfile = localStorage.getItem('userProfile');
+            const storedOrders = localStorage.getItem('orders');
+            
+            if (storedProducts) { products = JSON.parse(storedProducts); }
+            if (storedCart) { cart = JSON.parse(storedCart); }
+            if (storedProfile) { userProfile = JSON.parse(storedProfile); }
+            if (storedOrders) { orders = JSON.parse(storedOrders); }
+        }
+
+        // The new product description to be applied to all products
+        const newDescription = `Bring Your Walls to Life with Premium Posters!
+
+Our high-quality posters are digitally created and printed on Kodak 180 GSM paper, delivering vibrant colors, crisp details, and a professional finish that lasts. Perfect for room décor, gifting, or adding personality to your space.
+We offer exclusive deals like Buy 6 Posters and Get 2 Free – giving you 8 stunning prints for just ₹300! From art and quotes to photography and custom designs, you’ll find the perfect piece to match your style.
+Order today and enjoy premium quality at an unbeatable price. Contact us for more details or custom requests!`;
+
+        // Initial data, will be overwritten by localStorage if data exists
+        let products = [
+            {
+                id: 1,
+                name: 'Traditional Engraved Frame',
+                price: 1899.00,
+                oldPrice: 2000.00,
+                discount: '5%',
+                category: 'Wooden Frames',
+                image: 'https://placehold.co/400x400/CCCCCC/333333?text=Product+1A',
+                images: [
+                    'https://placehold.co/400x400/CCCCCC/333333?text=Product+1A',
+                    'https://placehold.co/400x400/FFC145/FFFFFF?text=Product+1B',
+                    'https://placehold.co/400x400/333333/FFFFFF?text=Product+1C',
+                ],
+                description: newDescription,
+                highlights: [
+                    'High-quality wooden frame',
+                    'Customizable with 9 photos',
+                    'Elegant finish'
+                ],
+                reviews: [
+                    { name: 'Rahul S.', rating: 5, text: 'Beautiful craftsmanship and fast delivery!' },
+                    { name: 'Priya K.', rating: 4, text: 'Solid frame, looks great. A bit smaller than expected.' }
+                ]
+            },
+            {
+                id: 2,
+                name: 'Elegant Zari Work Frame',
+                price: 3500.50,
+                oldPrice: 4000.00,
+                discount: '12%',
+                category: 'Metallic Frames',
+                image: 'https://placehold.co/400x400/CCCCCC/333333?text=Product+2A',
+                images: [
+                    'https://placehold.co/400x400/CCCCCC/333333?text=Product+2A',
+                    'https://placehold.co/400x400/FFC145/FFFFFF?text=Product+2B',
+                    'https://placehold.co/400x400/333333/FFFFFF?text=Product+2C',
+                ],
+                description: newDescription,
+                highlights: [
+                    'Ornate frame with a touch of gold leaf',
+                    'Perfect for wedding photos',
+                    'Durable metal construction'
+                ],
+                reviews: [
+                    { name: 'Anjali V.', rating: 5, text: 'Absolutely stunning! Exceeded my expectations.' },
+                    { name: 'Vijay P.', rating: 5, text: 'Perfect for my wedding photo. The detail is incredible.' }
+                ]
+            },
+            {
+                id: 3,
+                name: 'Rustic Terracotta Frame',
+                price: 2450.00,
+                oldPrice: 2800.00,
+                discount: '12.5%',
+                category: 'Collage Frames',
+                image: 'https://placehold.co/400x400/CCCCCC/333333?text=Product+3A',
+                images: [
+                    'https://placehold.co/400x400/CCCCCC/333333?text=Product+3A',
+                    'https://placehold.co/400x400/FFC145/FFFFFF?text=Product+3B',
+                    'https://placehold.co/400x400/333333/FFFFFF?text=Product+3C',
+                ],
+                description: newDescription,
+                highlights: [
+                    'Hand-carved terracotta design',
+                    'Rustic, natural feel',
+                    'Holds multiple photos'
+                ],
+                reviews: [
+                    { name: 'Karan D.', rating: 4, text: 'Great unique design. The color is a bit different from the picture.' }
+                ]
+            },
+            {
+                id: 4,
+                name: 'Minimalist Metallic Frame',
+                price: 2999.00,
+                oldPrice: 3500.00,
+                discount: '14%',
+                category: 'Custom Designs',
+                image: 'https://placehold.co/400x400/CCCCCC/333333?text=Product+4A',
+                images: [
+                    'https://placehold.co/400x400/CCCCCC/333333?text=Product+4A',
+                    'https://placehold.co/400x400/FFC145/FFFFFF?text=Product+4B',
+                    'https://placehold.co/400x400/333333/FFFFFF?text=Product+4C',
+                ],
+                description: newDescription,
+                highlights: [
+                    'A shimmering metallic frame',
+                    'Adds a touch of sophistication',
+                    'Customizable size and color'
+                ],
+                reviews: []
+            },
+        ];
+        let cart = [];
+        let userProfile = {
+            name: 'Guest User',
+            address1: '123 Main Street',
+            address2: '',
+            city: 'Anytown',
+            state: 'India',
+            pincode: '123456',
+            country: 'India',
+            age: '',
+            phone: ''
+        };
+        let orders = [];
+        let currentFilter = 'All';
+
+
+        loadData(); // Load data from localStorage on initial page load
+
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const featuredProductsGrid = document.getElementById('featured-products-grid');
+        const allProductsGrid = document.getElementById('all-products-grid');
+        const cartContent = document.getElementById('cart-content');
+        const cartBadge = document.getElementById('cart-badge');
+        const toastOverlay = document.getElementById('toast-overlay');
+        const toastMessageElement = document.getElementById('toast-message');
+        const toastIconElement = document.getElementById('toast-icon');
+        const toastCloseBtn = document.getElementById('toast-close-btn');
+        const toast = document.getElementById('toast');
+        let toastTimeout;
+
+
+        // --- Navigation Logic ---
+        function navigateTo(pageId) {
+            pages.forEach(page => page.classList.remove('active'));
+            const targetPage = document.getElementById(pageId + '-page');
+            if (targetPage) {
+                 targetPage.classList.add('active');
+            }
+
+            navLinks.forEach(link => link.classList.remove('active'));
+            const targetNavLink = document.querySelector(`.nav-link[onclick*="navigateTo('${pageId}')"]`);
+            if (targetNavLink) {
+                 targetNavLink.classList.add('active');
+            }
+
+            if (pageId === 'products' || pageId === 'home') {
+                renderProducts();
+            } else if (pageId === 'cart') {
+                renderCart();
+            }
+        }
+
+        // --- Product Rendering ---
+        function createProductCard(product) {
+            return `
+                <a href="product.html?id=${product.id}" class="product-card card">
+                    <img src="${product.image}" alt="${product.name}" onerror="this.src='https://placehold.co/400x400/CCCCCC/333333?text=Image+Not+Found'">
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <div class="card-actions">
+                            <span class="price">₹${product.price.toFixed(2)}</span>
+                            <button class="add-to-cart-btn" onclick="event.stopPropagation(); event.preventDefault(); addToCart(${product.id});">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Add to Cart</span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        function filterProducts(filter, searchTerm = '') {
+            currentFilter = filter;
+            let filteredProducts = products;
+            
+            if (filter && filter !== 'All') {
+                filteredProducts = products.filter(p => p.category === filter);
+            }
+
+            if (searchTerm) {
+                filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+            }
+
+            renderProducts(filteredProducts);
+        }
+        
+        function renderProducts(filteredProducts = products) {
+            const featuredProducts = filteredProducts.slice(0, 3);
+            const allProducts = filteredProducts;
+
+            if (featuredProductsGrid) {
+                featuredProductsGrid.innerHTML = featuredProducts.map(createProductCard).join('');
+            }
+            if (allProductsGrid) {
+                allProductsGrid.innerHTML = allProducts.map(createProductCard).join('');
+            }
+        }
+        
+
+        // --- Cart Logic ---
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartBadge();
+            saveData();
+            showToast(`${product.name} added to cart!`);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            renderCart();
+            updateCartBadge();
+            saveData();
+            showToast('Item removed from cart.', 'error');
+        }
+        
+        function checkout() {
+            if (cart.length > 0) {
+                const newOrder = {
+                    id: orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1,
+                    date: new Date().toLocaleDateString(),
+                    total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+                    items: [...cart],
+                };
+                orders.push(newOrder);
+                cart = [];
+                saveData();
+                updateCartBadge();
+                showToast('Order placed successfully!', 'success');
+                renderCart(); // Re-render cart to show empty state
+            }
+        }
+
+        function updateQuantity(productId, newQuantity) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity = newQuantity;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                }
+            }
+            renderCart();
+            updateCartBadge();
+            saveData();
+        }
+
+        function updateCartBadge() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            if (totalItems > 0) {
+                cartBadge.textContent = totalItems;
+                cartBadge.classList.remove('hidden');
+            } else {
+                cartBadge.classList.add('hidden');
+            }
+        }
+
+        function renderCart() {
+            if (cart.length === 0) {
+                cartContent.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p style="font-size: 1.5rem; font-weight: 600; color: var(--text-color-light);">Your cart is empty.</p>
+                        <button class="hero-btn" style="background-color: var(--primary-color); color: white;" onclick="navigateTo('products')"><i class="fas fa-arrow-right"></i> Start Shopping</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+            cartContent.innerHTML = `
+                <div class="products-list">
+                    ${cart.map(item => `
+                        <div class="cart-item">
+                            <div class="cart-item-details">
+                                <img src="${item.image}" alt="${item.name}" onerror="this.src='https://placehold.co/80x80/CCCCCC/333333?text=Image+Not+Found'">
+                                <div class="cart-item-info">
+                                    <h4>${item.name}</h4>
+                                    <p>₹${item.price.toFixed(2)}</p>
+                                </div>
+                            </div>
+                            <div class="cart-item-actions">
+                                <div class="quantity-control">
+                                    <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})"><i class="fas fa-minus"></i></button>
+                                    <span>${item.quantity}</span>
+                                    <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})"><i class="fas fa-plus"></i></button>
+                                </div>
+                                <button class="remove-from-cart-btn" onclick="removeFromCart(${item.id})"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="cart-summary">
+                    <p style="font-size: 1.5rem; font-weight: 700;">Total: ₹${total.toFixed(2)}</p>
+                    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+                </div>
+            `;
+        }
+
+        // --- Toast Notification ---
+        function showToast(message, type = 'success') {
+            clearTimeout(toastTimeout);
+            toastMessageElement.textContent = message;
+            toast.className = 'toast card ' + type;
+            if (type === 'success') {
+                toastIconElement.className = 'fas fa-check-circle icon';
+            } else {
+                toastIconElement.className = 'fas fa-exclamation-triangle icon';
+            }
+            toastOverlay.classList.add('active');
+            toastTimeout = setTimeout(() => {
+                toastOverlay.classList.remove('active');
+            }, 3000);
+        }
+        toastCloseBtn.addEventListener('click', () => {
+            toastOverlay.classList.remove('active');
+            clearTimeout(toastTimeout);
+        });
+
+        // --- User Profile Update Logic ---
+        function updateNavProfile() {
+            const userNavNameSpan = document.getElementById('user-nav-name');
+            if (userNavNameSpan && userProfile && userProfile.name && userProfile.name !== 'Guest User') {
+                userNavNameSpan.textContent = `Hello, ${userProfile.name.split(' ')[0]}!`;
+            } else {
+                userNavNameSpan.textContent = 'Profile';
+            }
+        }
+        
+        // Render category buttons dynamically to avoid duplicates
+        function renderCategoryButtons() {
+            const categoryButtonsContainer = document.getElementById('category-buttons');
+            if (categoryButtonsContainer) {
+                categoryButtonsContainer.innerHTML = ''; // Clear existing buttons
+                const uniqueCategories = [...new Set(products.map(p => p.category))];
+                const allButton = document.createElement('button');
+                allButton.textContent = 'Show All';
+                allButton.classList.add('active');
+                allButton.addEventListener('click', () => {
+                    document.querySelectorAll('.category-buttons button').forEach(btn => btn.classList.remove('active'));
+                    allButton.classList.add('active');
+                    filterProducts('All');
+                });
+                categoryButtonsContainer.appendChild(allButton);
+
+                uniqueCategories.forEach(category => {
+                    const button = document.createElement('button');
+                    button.textContent = category;
+                    button.addEventListener('click', () => {
+                        document.querySelectorAll('.category-buttons button').forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        filterProducts(category);
+                    });
+                    categoryButtonsContainer.appendChild(button);
+                });
+            }
+        }
+
+
+        // Initial render and event listeners on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search-input');
+            const categoryButtonsContainer = document.getElementById('category-buttons');
+
+            renderProducts();
+            renderCart();
+            updateCartBadge();
+            updateNavProfile();
+            renderCategoryButtons();
+
+
+            // Search input event listener
+            if (searchInput) {
+                searchInput.addEventListener('keyup', (e) => {
+                    const searchTerm = e.target.value;
+                    filterProducts(currentFilter, searchTerm);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

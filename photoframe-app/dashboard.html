@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mx. Banerjee | Admin Dashboard</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Your provided color palette */
+            --primary-color: #21130d;
+            --primary-color-hover: #e28743;
+            --text-color-dark: #21130d;
+            --text-color-light: #6b7280;
+            --bg-color-light: #eeeee4;
+            --bg-color-white: #ffffff;
+            --border-color: #d1d5db;
+            --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --sidebar-bg: #1e293b;
+            --sidebar-item-hover: #2d3846;
+            --sidebar-active-bg: #2563eb;
+            --sidebar-active-color: #fff;
+            --sidebar-link-color: #d1d5db;
+            --button-primary: #2563eb;
+            --button-success: #10b981;
+            --button-danger: #ef4444;
+            --button-warning: #fbbf24;
+            --button-text-light: #fff;
+            --button-text-dark: #21130d;
+            --status-active: #10b981;
+            --status-pending: #fbbf24;
+            --status-inactive: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color-light);
+            color: var(--text-color-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* --- Layout Structure --- */
+        .admin-layout {
+            display: flex;
+            width: 100%;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-link-color);
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        /* --- Sidebar Branding & Nav --- */
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding-left: 0.5rem;
+        }
+        .sidebar-brand .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--bg-color-white);
+        }
+
+        .sidebar-nav {
+            flex-grow: 1;
+        }
+        .sidebar-nav-item {
+            list-style: none;
+            margin-bottom: 0.5rem;
+        }
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            color: var(--sidebar-link-color);
+            transition: all 0.2s ease;
+        }
+        .sidebar-nav-link:hover,
+        .sidebar-nav-link.active {
+            background-color: var(--sidebar-active-bg);
+            color: var(--sidebar-active-color);
+        }
+        .sidebar-nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-logout {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .logout-btn {
+            background-color: var(--button-danger);
+            color: var(--button-text-light);
+            border: none;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .logout-btn:hover {
+            opacity: 0.9;
+        }
+        .logout-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* --- Dashboard Specific Styles --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .summary-card {
+            background-color: var(--bg-color-white);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .summary-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-color-light);
+        }
+        .summary-card-header i {
+            font-size: 1.5rem;
+            color: var(--button-primary);
+        }
+        .summary-card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        .summary-card-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .summary-card-value {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1;
+            color: var(--text-color-dark);
+        }
+        .summary-card-subtext {
+            text-align: right;
+            font-size: 0.875rem;
+            color: var(--text-color-light);
+            line-height: 1.2;
+        }
+        .sub-metric {
+            display: block;
+            font-weight: 600;
+            color: var(--text-color-dark);
+        }
+        .sub-metric-success { color: var(--button-success); }
+        .sub-metric-danger { color: var(--button-danger); }
+        .sub-metric-warning { color: var(--button-warning); }
+
+        /* --- Responsive Styles for Mobile --- */
+        @media (max-width: 768px) {
+            .admin-layout { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: static; padding: 1rem; }
+            .main-content { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <span class="logo">Mx. Banerjee</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="sidebar-nav-item"><a href="dashboard.html" class="sidebar-nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li class="sidebar-nav-item"><a href="user-management.html" class="sidebar-nav-link"><i class="fas fa-users"></i> User Management</a></li>
+                    <li class="sidebar-nav-item"><a href="product-management.html" class="sidebar-nav-link"><i class="fas fa-box-open"></i> Product Management</a></li>
+                    <li class="sidebar-nav-item"><a href="orders.html" class="sidebar-nav-link"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                    <li class="sidebar-nav-item"><a href="#" class="sidebar-nav-link"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-logout">
+                <button class="logout-btn" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <h2 style="margin-bottom: 2rem;">Admin Dashboard – Summary</h2>
+
+            <div class="dashboard-grid">
+                <!-- User Summary Card -->
+                <div class="summary-card">
+                    <div class="summary-card-header">
+                        <i class="fas fa-users"></i>
+                        <span class="summary-card-title">Total Users</span>
+                    </div>
+                    <div class="summary-card-content">
+                        <span id="total-users" class="summary-card-value">0</span>
+                        <div class="summary-card-subtext">
+                            <span id="active-users" class="sub-metric sub-metric-success">0 Active</span>
+                            <span id="inactive-users" class="sub-metric sub-metric-danger">0 Inactive</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Summary Card -->
+                <div class="summary-card">
+                    <div class="summary-card-header">
+                        <i class="fas fa-box-open"></i>
+                        <span class="summary-card-title">Total Products</span>
+                    </div>
+                    <div class="summary-card-content">
+                        <span id="total-products" class="summary-card-value">0</span>
+                        <div class="summary-card-subtext">
+                            <span id="active-products" class="sub-metric sub-metric-success">0 Active</span>
+                            <span id="inactive-products" class="sub-metric sub-metric-danger">0 Inactive</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Summary Card -->
+                <div class="summary-card">
+                    <div class="summary-card-header">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="summary-card-title">Total Orders</span>
+                    </div>
+                    <div class="summary-card-content">
+                        <span id="total-orders" class="summary-card-value">0</span>
+                        <div class="summary-card-subtext">
+                            <span id="completed-orders" class="sub-metric sub-metric-success">0 Completed</span>
+                            <span id="processing-orders" class="sub-metric sub-metric-warning">0 Processing</span>
+                            <span id="cancelled-orders" class="sub-metric sub-metric-danger">0 Cancelled</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Placeholder for other dashboard cards if needed -->
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function logoutAdmin() {
+            localStorage.removeItem('isAdminLoggedIn');
+            window.location.href = 'index.html';
+        }
+
+        // Dummy data for demonstration if local storage is empty
+        const dummyUsers = [
+            { id: 1, name: 'John Doe', email: 'john@example.com', status: 'active', role: 'user' },
+            { id: 2, name: 'Jane Smith', email: 'jane@example.com', status: 'inactive', role: 'user' },
+            { id: 3, name: 'Admin User', email: 'admin@example.com', status: 'active', role: 'admin' }
+        ];
+
+        const dummyProducts = [
+            { id: 1, image: 'https://placehold.co/50x50/e28743/21130d?text=P1', name: 'Premium Coffee Beans', price: 500, status: 'Active' },
+            { id: 2, image: 'https://placehold.co/50x50/6b7280/ffffff?text=P2', name: 'Handmade Mug', price: 150, status: 'Inactive' },
+            { id: 3, image: 'https://placehold.co/50x50/10b981/ffffff?text=P3', name: 'Espresso Machine', price: 15000, status: 'Active' }
+        ];
+
+        const dummyOrders = [
+            { id: '#001', customerName: 'John Doe', orderDate: '2023-08-01', totalPrice: 750, status: 'completed' },
+            { id: '#002', customerName: 'Jane Smith', orderDate: '2023-08-02', totalPrice: 150, status: 'processing' },
+            { id: '#003', customerName: 'Admin User', orderDate: '2023-08-05', totalPrice: 15000, status: 'cancelled' }
+        ];
+
+        function loadDashboardData() {
+            // Load or initialize dummy data in local storage
+            let users = JSON.parse(localStorage.getItem('users'));
+            if (!users) {
+                users = dummyUsers;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            let products = JSON.parse(localStorage.getItem('products'));
+            if (!products) {
+                products = dummyProducts;
+                localStorage.setItem('products', JSON.stringify(products));
+            }
+
+            let orders = JSON.parse(localStorage.getItem('orders'));
+            if (!orders) {
+                orders = dummyOrders;
+                localStorage.setItem('orders', JSON.stringify(orders));
+            }
+
+            // Calculate metrics
+            const totalUsers = users.length;
+            const activeUsers = users.filter(u => u.status === 'active').length;
+            const inactiveUsers = users.filter(u => u.status === 'inactive').length;
+
+            const totalProducts = products.length;
+            const activeProducts = products.filter(p => p.status === 'Active').length;
+            const inactiveProducts = products.filter(p => p.status === 'Inactive').length;
+
+            const totalOrders = orders.length;
+            const completedOrders = orders.filter(o => o.status === 'completed').length;
+            const processingOrders = orders.filter(o => o.status === 'processing').length;
+            const cancelledOrders = orders.filter(o => o.status === 'cancelled').length;
+
+            // Update the dashboard HTML
+            document.getElementById('total-users').textContent = totalUsers;
+            document.getElementById('active-users').textContent = `${activeUsers} Active`;
+            document.getElementById('inactive-users').textContent = `${inactiveUsers} Inactive`;
+
+            document.getElementById('total-products').textContent = totalProducts;
+            document.getElementById('active-products').textContent = `${activeProducts} Active`;
+            document.getElementById('inactive-products').textContent = `${inactiveProducts} Inactive`;
+
+            document.getElementById('total-orders').textContent = totalOrders;
+            document.getElementById('completed-orders').textContent = `${completedOrders} Completed`;
+            document.getElementById('processing-orders').textContent = `${processingOrders} Processing`;
+            document.getElementById('cancelled-orders').textContent = `${cancelledOrders} Cancelled`;
+        }
+
+        // Load data when the page loads
+        document.addEventListener('DOMContentLoaded', loadDashboardData);
+    </script>
+</body>
+</html>

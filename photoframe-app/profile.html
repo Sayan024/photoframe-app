@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mx.banerjee | Profile</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #21130d; /* Eternity - dark black/brown */
+            --primary-color-hover: #e28743; /* Burnt Sienna */
+            --text-color-dark: #21130d;
+            --text-color-light: #6b7280;
+            --bg-color-light: #eeeee4; /* Green White */
+            --bg-color-white: #ffffff;
+            --border-color: #d1d5db;
+            --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --price-color: #5CB338;
+            --accent-color: #eab676; /* Tacao */
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: var(--bg-color-light);
+            color: var(--text-color-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .text-center { text-align: center; }
+        .card {
+            background-color: var(--bg-color-white);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .header {
+            background-color: var(--bg-color-white);
+            box-shadow: var(--shadow-light);
+            padding: 1rem 0;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .logo:hover { color: var(--accent-color); }
+        .nav-links { display: flex; gap: 1.5rem; }
+        .nav-link {
+            color: var(--text-color-light);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .nav-link.active { color: var(--primary-color); }
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        .main {
+            flex-grow: 1;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .profile-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+        .profile-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+            border-left: 5px solid var(--primary-color);
+            animation: slideInUp 0.7s ease-out;
+        }
+        .stat-card h4 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+        }
+        .stat-card p {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color-light);
+        }
+        .profile-details, .complaint-section {
+            padding: 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .profile-details h3, .orders-section h3, .complaint-section h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        .profile-form .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        @media (min-width: 640px) {
+            .profile-form .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .profile-form .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .profile-form label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .profile-form input, .profile-form textarea {
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+        .profile-form .form-group-full {
+            grid-column: 1 / -1;
+        }
+        .profile-form textarea { resize: vertical; }
+        .profile-form button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            max-width: 200px;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        .profile-form button:hover { background-color: var(--primary-color-hover); }
+        .orders-section {
+            padding: 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .orders-list { display: flex; flex-direction: column; gap: 1rem; }
+        .order-card {
+            padding: 1.5rem;
+            border-left: 5px solid #e5e7eb;
+            transition: border-color 0.3s ease;
+        }
+        .order-card:hover { border-color: var(--primary-color); }
+        .order-summary {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .order-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .order-item { color: var(--text-color-light); }
+        .complaint-section p a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .complaint-section p a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            background-color: var(--text-color-dark);
+            color: var(--bg-color-white);
+            padding: 2rem 0;
+            margin-top: auto;
+            text-align: center;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .footer-text {
+            font-size: 0.875rem;
+            color: var(--text-color-light);
+        }
+        .toast-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.1);
+            display: none;
+            place-items: center;
+            z-index: 2000;
+        }
+        .toast-overlay.active { display: grid; }
+        .toast {
+            background-color: var(--bg-color-white);
+            box-shadow: var(--shadow-card);
+            padding: 1.5rem 2rem;
+            border-radius: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 400px;
+            width: 90%;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .toast .icon { font-size: 1.5rem; }
+        .toast.success .icon { color: #5CB338; }
+        .toast.error .icon { color: #FB4141; }
+        .toast .message {
+            font-weight: 600;
+            font-size: 1rem;
+            flex-grow: 1;
+        }
+        .toast-close-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-color-light);
+            cursor: pointer;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes slideInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">mx.banerjee</a>
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-home"></i> <span>Home</span>
+                    </a>
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-box"></i> <span>Products</span>
+                    </a>
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i> <span>Cart</span>
+                    </a>
+                    <a href="profile.html" class="nav-link active">
+                        <i class="fas fa-user"></i> <span id="user-nav-name">Profile</span>
+                    </a>
+                    <a href="admin-login.html" class="nav-link">
+                        <i class="fas fa-lock"></i> <span>Admin</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main container">
+        <div class="profile-header card">
+            <h1 id="user-name-display"></h1>
+            <div id="profile-stats" class="profile-stats-grid">
+                <div class="stat-card card">
+                    <h4 id="total-orders">0</h4>
+                    <p>Total Orders</p>
+                </div>
+                <div class="stat-card card">
+                    <h4 id="total-spent">₹0.00</h4>
+                    <p>Total Spent</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="profile-details card">
+            <h3>Update Profile</h3>
+            <form id="profile-form" class="profile-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="profile-name">Name</label>
+                        <input type="text" id="profile-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-age">Age</label>
+                        <input type="number" id="profile-age">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-phone">Phone Number</label>
+                        <input type="tel" id="profile-phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-country">Country</label>
+                        <input type="text" id="profile-country">
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label for="profile-address1">Address Line 1</label>
+                        <input type="text" id="profile-address1">
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label for="profile-address2">Address Line 2 (optional)</label>
+                        <input type="text" id="profile-address2">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-city">City</label>
+                        <input type="text" id="profile-city">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-state">State</label>
+                        <input type="text" id="profile-state">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-pincode">Pincode</label>
+                        <input type="text" id="profile-pincode">
+                    </div>
+                </div>
+                <button type="submit"><i class="fas fa-save"></i> Update Profile</button>
+            </form>
+        </section>
+
+        <section class="orders-section card">
+            <h3>Your Orders</h3>
+            <div id="orders-list" class="orders-list">
+                <!-- Orders will be injected here by JS -->
+            </div>
+        </section>
+        
+        <section class="complaint-section card">
+            <h3>Complaint Regarding Order</h3>
+            <p>If you have any complaints regarding your order, please email us at <a href="mailto:sayanbanerjee024@gmail.com">sayanbanerjee024@gmail.com</a>.</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <a href="index.html" class="footer-logo">mx.banerjee</a>
+            <p class="footer-text">© 2023 mx.banerjee. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification Overlay -->
+    <div id="toast-overlay" class="toast-overlay">
+        <div id="toast" class="toast card">
+            <i id="toast-icon" class="fas icon"></i>
+            <span id="toast-message" class="message"></span>
+            <button id="toast-close-btn" class="toast-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+    
+    <script>
+        // --- Data Persistence Functions using localStorage ---
+        function saveData() {
+            localStorage.setItem('userProfile', JSON.stringify(userProfile));
+            localStorage.setItem('orders', JSON.stringify(orders));
+        }
+
+        function loadData() {
+            const storedProfile = localStorage.getItem('userProfile');
+            const storedOrders = localStorage.getItem('orders');
+            
+            if (storedProfile) { userProfile = JSON.parse(storedProfile); }
+            if (storedOrders) { orders = JSON.parse(storedOrders); }
+        }
+
+        // Initial data, will be overwritten by localStorage if it exists
+        let userProfile = {
+            name: 'Guest User',
+            age: '',
+            phone: '',
+            address1: '123 Main Street',
+            address2: '',
+            city: 'Anytown',
+            state: 'India',
+            pincode: '123456',
+            country: 'India'
+        };
+        let orders = [];
+
+        loadData(); // Load data from localStorage on initial page load
+
+        const profileForm = document.getElementById('profile-form');
+        const ordersList = document.getElementById('orders-list');
+        const userNameDisplay = document.getElementById('user-name-display');
+        const totalOrdersDisplay = document.getElementById('total-orders');
+        const totalSpentDisplay = document.getElementById('total-spent');
+        const toastOverlay = document.getElementById('toast-overlay');
+        const toastMessageElement = document.getElementById('toast-message');
+        const toastIconElement = document.getElementById('toast-icon');
+        const toastCloseBtn = document.getElementById('toast-close-btn');
+        const toast = document.getElementById('toast');
+        let toastTimeout;
+
+        // --- Profile Logic ---
+        function renderProfilePage() {
+            userNameDisplay.textContent = `Hello, ${userProfile.name}!`;
+            document.getElementById('profile-name').value = userProfile.name;
+            document.getElementById('profile-age').value = userProfile.age;
+            document.getElementById('profile-phone').value = userProfile.phone;
+            document.getElementById('profile-address1').value = userProfile.address1;
+            document.getElementById('profile-address2').value = userProfile.address2;
+            document.getElementById('profile-city').value = userProfile.city;
+            document.getElementById('profile-state').value = userProfile.state;
+            document.getElementById('profile-pincode').value = userProfile.pincode;
+            document.getElementById('profile-country').value = userProfile.country;
+
+            const totalOrders = orders.length;
+            const totalSpent = orders.reduce((sum, order) => sum + order.total, 0);
+
+            totalOrdersDisplay.textContent = totalOrders;
+            totalSpentDisplay.textContent = `₹${totalSpent.toFixed(2)}`;
+            
+            renderOrders();
+        }
+
+        function renderOrders() {
+            if (orders.length === 0) {
+                ordersList.innerHTML = `<p style="padding: 1.5rem; text-align: center; color: var(--text-color-light);">You haven't placed any orders yet.</p>`;
+                return;
+            }
+
+            ordersList.innerHTML = orders.map(order => `
+                <div class="order-card card">
+                    <div class="order-summary">
+                        <span>Order #${order.id}</span>
+                        <span>Date: ${order.date}</span>
+                        <span>Total: ₹${order.total.toFixed(2)}</span>
+                    </div>
+                    <div class="order-details">
+                        ${order.items.map(item => `<p class="order-item">${item.name} (${item.quantity}) - ₹${(item.price * item.quantity).toFixed(2)}</p>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        profileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            userProfile.name = document.getElementById('profile-name').value;
+            userProfile.age = document.getElementById('profile-age').value;
+            userProfile.phone = document.getElementById('profile-phone').value;
+            userProfile.address1 = document.getElementById('profile-address1').value;
+            userProfile.address2 = document.getElementById('profile-address2').value;
+            userProfile.city = document.getElementById('profile-city').value;
+            userProfile.state = document.getElementById('profile-state').value;
+            userProfile.pincode = document.getElementById('profile-pincode').value;
+            userProfile.country = document.getElementById('profile-country').value;
+            saveData();
+            renderProfilePage();
+            showToast('Profile updated successfully!');
+        });
+        
+        // --- Toast Notification ---
+        function showToast(message, type = 'success') {
+            clearTimeout(toastTimeout);
+            toastMessageElement.textContent = message;
+            toast.className = 'toast card ' + type;
+            if (type === 'success') {
+                toastIconElement.className = 'fas fa-check-circle icon';
+            } else {
+                toastIconElement.className = 'fas fa-exclamation-triangle icon';
+            }
+            toastOverlay.classList.add('active');
+            toastTimeout = setTimeout(() => {
+                toastOverlay.classList.remove('active');
+            }, 3000);
+        }
+        toastCloseBtn.addEventListener('click', () => {
+            toastOverlay.classList.remove('active');
+            clearTimeout(toastTimeout);
+        });
+
+        // Initial render on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProfilePage();
+        });
+    </script>
+</body>
+</html>
